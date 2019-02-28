@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mhdss.shop.dal.dao.base.ShopDAO">
+
+    <sql id="insert_columns">
+    (shop_name, shop_sn,shop_code, user_id, is_self, shopkeeper, 	telephone, shop_img, is_invoice, invoice_remarks, service_start_time, service_end_time, shop_ative, shop_status, status_desc, shop_money, lock_money, no_settled_order_num, no_settled_order_fee, pay_ment_money, status, update_time, create_time)
+  </sql>
+
+    <sql id="insert_values">
+    (#{shopName}, #{shopSn}, #{shopCode}, #{userId}, #{isSelf}, #{shopkeeper}, #{telephone}, #{shopImg}, #{isInvoice}, #{invoiceRemarks}, #{serviceStartTime}, #{serviceEndTime}, #{shopAtive}, #{shopStatus}, #{statusDesc}, #{shopMoney}, #{lockMoney}, #{noSettledOrderNum}, #{noSettledOrderFee}, #{payMentMoney}, #{status}, #{updateTime}, #{createTime})
+  </sql>
+
+    <sql id="query_columns">
+    id, shop_name AS shopName, shop_sn AS shopSn, shop_code AS shopCode ,user_id AS userId, is_self AS isSelf, shopkeeper, 	telephone, shop_img AS shopImg, is_invoice AS isInvoice, invoice_remarks AS invoiceRemarks, service_start_time AS serviceStartTime, service_end_time AS serviceEndTime, shop_ative AS shopAtive, shop_status AS shopStatus, status_desc AS statusDesc, shop_money AS shopMoney, lock_money AS lockMoney, no_settled_order_num AS noSettledOrderNum, no_settled_order_fee AS noSettledOrderFee, pay_ment_money AS payMentMoney, status, update_time AS updateTime, create_time AS createTime
+  </sql>
+
+    <sql id="where">
+        <where>
+
+            <if test="userId != null">
+                AND user_id = #{userId}
+            </if>
+
+        </where>
+    </sql>
+
+    <sql id="limit_where">
+        <include refid="where"/>
+        <if test="range != 0">
+            LIMIT ${start}, ${range}
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.mhdss.shop.dal.dataobject.base.ShopDO">
+        <selectKey keyProperty="id" resultType="long">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO shop
+        <include refid="insert_columns"/>
+        VALUES
+        <include refid="insert_values"/>
+    </insert>
+
+    <update id="insertUpdateOnDuplicate" parameterType="com.mhdss.shop.dal.dataobject.base.ShopDO">
+        <selectKey keyProperty="id" resultType="long">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO shop
+        <include refid="insert_columns"/>
+        VALUES
+        <include refid="insert_values"/>
+        ON DUPLICATE KEY UPDATE update_time = #{updateTime}, id = LAST_INSERT_ID(id)
+    </update>
+
+    <update id="updateById" parameterType="com.mhdss.shop.dal.dataobject.base.ShopDO">
+        UPDATE shop
+        <set>
+            <if test="shopName != null">
+                shop_name = #{shopName},
+            </if>
+            <if test="shopSn != null">
+                shop_sn = #{shopSn},
+            </if>
+            <if test="shopCode != null">
+                shop_Code = #{shopCode},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="isSelf != null">
+                is_self = #{isSelf},
+            </if>
+            <if test="shopkeeper != null">
+                shopkeeper = #{shopkeeper},
+            </if>
+            <if test="	telephone != null">
+                telephone = #{	telephone},
+            </if>
+            <if test="shopImg != null">
+                shop_img = #{shopImg},
+            </if>
+            <if test="isInvoice != null">
+                is_invoice = #{isInvoice},
+            </if>
+            <if test="invoiceRemarks != null">
+                invoice_remarks = #{invoiceRemarks},
+            </if>
+            <if test="serviceStartTime != null">
+                service_start_time = #{serviceStartTime},
+            </if>
+            <if test="serviceEndTime != null">
+                service_end_time = #{serviceEndTime},
+            </if>
+            <if test="shopAtive != null">
+                shop_ative = #{shopAtive},
+            </if>
+            <if test="shopStatus != null">
+                shop_status = #{shopStatus},
+            </if>
+            <if test="statusDesc != null">
+                status_desc = #{statusDesc},
+            </if>
+            <if test="shopMoney != null">
+                shop_money = #{shopMoney},
+            </if>
+            <if test="lockMoney != null">
+                lock_money = #{lockMoney},
+            </if>
+            <if test="noSettledOrderNum != null">
+                no_settled_order_num = #{noSettledOrderNum},
+            </if>
+            <if test="noSettledOrderFee != null">
+                no_settled_order_fee = #{noSettledOrderFee},
+            </if>
+            <if test="payMentMoney != null">
+                pay_ment_money = #{payMentMoney},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateByIds" parameterType="java.util.Map">
+        UPDATE shop
+        <set>
+            <if test="target.shopName != null">
+                shop_name = #{target.shopName},
+            </if>
+            <if test="target.shopSn != null">
+                shop_sn = #{target.shopSn},
+            </if>
+            <if test="target.shopCode != null">
+                shop_Code = #{target.shopCode},
+            </if>
+            <if test="target.userId != null">
+                user_id = #{target.userId},
+            </if>
+            <if test="target.isSelf != null">
+                is_self = #{target.isSelf},
+            </if>
+            <if test="target.shopkeeper != null">
+                shopkeeper = #{target.shopkeeper},
+            </if>
+            <if test="target.	telephone != null">
+                telephone = #{target.	telephone},
+            </if>
+            <if test="target.shopImg != null">
+                shop_img = #{target.shopImg},
+            </if>
+            <if test="target.isInvoice != null">
+                is_invoice = #{target.isInvoice},
+            </if>
+            <if test="target.invoiceRemarks != null">
+                invoice_remarks = #{target.invoiceRemarks},
+            </if>
+            <if test="target.serviceStartTime != null">
+                service_start_time = #{target.serviceStartTime},
+            </if>
+            <if test="target.serviceEndTime != null">
+                service_end_time = #{target.serviceEndTime},
+            </if>
+            <if test="target.shopAtive != null">
+                shop_ative = #{target.shopAtive},
+            </if>
+            <if test="target.shopStatus != null">
+                shop_status = #{target.shopStatus},
+            </if>
+            <if test="target.statusDesc != null">
+                status_desc = #{target.statusDesc},
+            </if>
+            <if test="target.shopMoney != null">
+                shop_money = #{target.shopMoney},
+            </if>
+            <if test="target.lockMoney != null">
+                lock_money = #{target.lockMoney},
+            </if>
+            <if test="target.noSettledOrderNum != null">
+                no_settled_order_num = #{target.noSettledOrderNum},
+            </if>
+            <if test="target.noSettledOrderFee != null">
+                no_settled_order_fee = #{target.noSettledOrderFee},
+            </if>
+            <if test="target.payMentMoney != null">
+                pay_ment_money = #{target.payMentMoney},
+            </if>
+            <if test="target.status != null">
+                status = #{target.status},
+            </if>
+            <if test="target.updateTime != null">
+                update_time = #{target.updateTime},
+            </if>
+            <if test="target.createTime != null">
+                create_time = #{target.createTime},
+            </if>
+        </set>
+        WHERE id IN
+        <foreach close=")" collection="ids" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+    DELETE FROM shop WHERE id = #{id}
+  </delete>
+
+    <delete id="deleteByIds" parameterType="java.util.Collection">
+        DELETE FROM shop WHERE id IN
+        <foreach close=")" collection="collection" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectById" parameterType="long" resultType="com.mhdss.shop.dal.dataobject.base.ShopDO">
+        SELECT
+        <include refid="query_columns"/>
+        FROM shop WHERE id = #{id}
+    </select>
+
+    <select id="selectIdsByQuery" parameterType="com.mhdss.shop.query.base.ShopQuery" resultType="long">
+        SELECT id FROM shop
+        <include refid="limit_where"/>
+    </select>
+
+    <select id="selectByIds" parameterType="java.util.Collection"
+            resultType="com.mhdss.shop.dal.dataobject.base.ShopDO">
+        SELECT
+        <include refid="query_columns"/>
+        FROM shop WHERE id IN
+        <foreach close=")" collection="collection" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectCount" parameterType="com.mhdss.shop.query.base.ShopQuery" resultType="int">
+        SELECT COUNT(*) FROM shop
+        <include refid="where"/>
+    </select>
+
+    <select id="selectList" parameterType="com.mhdss.shop.query.base.ShopQuery"
+            resultType="com.mhdss.shop.dal.dataobject.base.ShopDO">
+        SELECT
+        <include refid="query_columns"/>
+        FROM shop
+        <include refid="limit_where"/>
+    </select>
+</mapper>

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mhdss.shop.dal.dao.base.UserDAO">
+
+    <sql id="insert_columns">
+    (user_phone, user_sex, login_pwd, login_salt, user_type, true_name, last_ip, last_time, cookie_key, wx_user_id, status, create_time, update_time)
+  </sql>
+
+    <sql id="insert_values">
+    (#{userPhone}, #{userSex}, #{loginPwd}, #{loginSalt}, #{userType}, #{trueName}, #{lastIp}, #{lastTime}, #{cookieKey}, #{wxUserId}, #{status}, #{createTime}, #{updateTime})
+  </sql>
+
+    <sql id="query_columns">
+    id, user_phone AS userPhone, user_sex AS userSex, login_pwd AS loginPwd, login_salt AS loginSalt, user_type AS userType, true_name AS trueName, last_ip AS lastIp, last_time AS lastTime, cookie_key AS cookieKey, wx_user_id AS wxUserId, status, create_time AS createTime, update_time AS updateTime
+  </sql>
+
+    <sql id="where">
+        <where>
+            <if test="userPhone != null">
+                AND user_phone = #{userPhone}
+            </if>
+
+            <if test="loginPwd != null">
+                AND login_pwd = #{loginPwd}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="limit_where">
+        <include refid="where"/>
+        <if test="range != 0">
+            LIMIT ${start}, ${range}
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.mhdss.shop.dal.dataobject.base.UserDO">
+        <selectKey keyProperty="id" resultType="long">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO user
+        <include refid="insert_columns"/>
+        VALUES
+        <include refid="insert_values"/>
+    </insert>
+
+    <update id="insertUpdateOnDuplicate" parameterType="com.mhdss.shop.dal.dataobject.base.UserDO">
+        <selectKey keyProperty="id" resultType="long">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO user
+        <include refid="insert_columns"/>
+        VALUES
+        <include refid="insert_values"/>
+        ON DUPLICATE KEY UPDATE update_time = #{updateTime}, id = LAST_INSERT_ID(id)
+    </update>
+
+    <update id="updateById" parameterType="com.mhdss.shop.dal.dataobject.base.UserDO">
+        UPDATE user
+        <set>
+            <if test="userPhone != null">
+                user_phone = #{userPhone},
+            </if>
+            <if test="userSex != null">
+                user_sex = #{userSex},
+            </if>
+            <if test="loginPwd != null">
+                login_pwd = #{loginPwd},
+            </if>
+            <if test="loginSalt != null">
+                login_salt = #{loginSalt},
+            </if>
+            <if test="userType != null">
+                user_type = #{userType},
+            </if>
+            <if test="trueName != null">
+                true_name = #{trueName},
+            </if>
+            <if test="lastIp != null">
+                last_ip = #{lastIp},
+            </if>
+            <if test="lastTime != null">
+                last_time = #{lastTime},
+            </if>
+            <if test="cookieKey != null">
+                cookie_key = #{cookieKey},
+            </if>
+            <if test="wxUserId != null">
+                wx_user_id = #{wxUserId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateByIds" parameterType="java.util.Map">
+        UPDATE user
+        <set>
+            <if test="target.userPhone != null">
+                user_phone = #{target.userPhone},
+            </if>
+            <if test="target.userSex != null">
+                user_sex = #{target.userSex},
+            </if>
+            <if test="target.loginPwd != null">
+                login_pwd = #{target.loginPwd},
+            </if>
+            <if test="target.loginSalt != null">
+                login_salt = #{target.loginSalt},
+            </if>
+            <if test="target.userType != null">
+                user_type = #{target.userType},
+            </if>
+            <if test="target.trueName != null">
+                true_name = #{target.trueName},
+            </if>
+            <if test="target.lastIp != null">
+                last_ip = #{target.lastIp},
+            </if>
+            <if test="target.lastTime != null">
+                last_time = #{target.lastTime},
+            </if>
+            <if test="target.cookieKey != null">
+                cookie_key = #{target.cookieKey},
+            </if>
+            <if test="target.wxUserId != null">
+                wx_user_id = #{target.wxUserId},
+            </if>
+            <if test="target.status != null">
+                status = #{target.status},
+            </if>
+            <if test="target.createTime != null">
+                create_time = #{target.createTime},
+            </if>
+            <if test="target.updateTime != null">
+                update_time = #{target.updateTime},
+            </if>
+        </set>
+        WHERE id IN
+        <foreach close=")" collection="ids" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+    DELETE FROM user WHERE id = #{id}
+  </delete>
+
+    <delete id="deleteByIds" parameterType="java.util.Collection">
+        DELETE FROM user WHERE id IN
+        <foreach close=")" collection="collection" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectById" parameterType="long" resultType="com.mhdss.shop.dal.dataobject.base.UserDO">
+        SELECT
+        <include refid="query_columns"/>
+        FROM user WHERE id = #{id}
+    </select>
+
+    <select id="selectIdsByQuery" parameterType="com.mhdss.shop.query.base.UserQuery" resultType="long">
+        SELECT id FROM user
+        <include refid="limit_where"/>
+    </select>
+
+    <select id="selectByIds" parameterType="java.util.Collection"
+            resultType="com.mhdss.shop.dal.dataobject.base.UserDO">
+        SELECT
+        <include refid="query_columns"/>
+        FROM user WHERE id IN
+        <foreach close=")" collection="collection" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectCount" parameterType="com.mhdss.shop.query.base.UserQuery" resultType="int">
+        SELECT COUNT(*) FROM user
+        <include refid="where"/>
+    </select>
+
+    <select id="selectList" parameterType="com.mhdss.shop.query.base.UserQuery"
+            resultType="com.mhdss.shop.dal.dataobject.base.UserDO">
+        SELECT
+        <include refid="query_columns"/>
+        FROM user
+        <include refid="limit_where"/>
+    </select>
+</mapper>

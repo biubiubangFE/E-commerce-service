@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mhdss.shop.dal.dao.base.GoodsCatsDAO">
+
+  <sql id="insert_columns">
+    (parent_id, cat_name, is_show, is_floor, cat_sort, garde, status, create_time, update_time)
+  </sql>
+
+  <sql id="insert_values">
+    (#{parentId}, #{catName}, #{isShow}, #{isFloor}, #{catSort}, #{garde}, #{status}, #{createTime}, #{updateTime})
+  </sql>
+
+  <sql id="query_columns">
+    id, parent_id AS parentId, cat_name AS catName, is_show AS isShow, is_floor AS isFloor, cat_sort AS catSort, garde, status, create_time AS createTime, update_time AS updateTime
+  </sql>
+
+  <sql id="where">
+    <where>
+      
+    </where>
+  </sql>
+
+  <sql id="limit_where">
+    <include refid="where"/>
+    <if test="range != 0">
+      LIMIT ${start}, ${range}
+    </if>
+  </sql>
+
+  <insert id="insert" parameterType="com.mhdss.shop.dal.dataobject.base.GoodsCatsDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO goods_cats <include refid="insert_columns"/> VALUES <include refid="insert_values"/>
+  </insert>
+
+  <update id="insertUpdateOnDuplicate" parameterType="com.mhdss.shop.dal.dataobject.base.GoodsCatsDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO goods_cats <include refid="insert_columns"/> VALUES <include refid="insert_values"/> ON DUPLICATE KEY UPDATE update_time = #{updateTime}, id = LAST_INSERT_ID(id)
+  </update>
+
+  <update id="updateById" parameterType="com.mhdss.shop.dal.dataobject.base.GoodsCatsDO">
+    UPDATE goods_cats
+    <set>
+      <if test="parentId != null">
+        parent_id = #{parentId},
+      </if>
+      <if test="catName != null">
+        cat_name = #{catName},
+      </if>
+      <if test="isShow != null">
+        is_show = #{isShow},
+      </if>
+      <if test="isFloor != null">
+        is_floor = #{isFloor},
+      </if>
+      <if test="catSort != null">
+        cat_sort = #{catSort},
+      </if>
+      <if test="garde != null">
+        garde = #{garde},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateByIds" parameterType="java.util.Map">
+    UPDATE goods_cats
+    <set>
+      <if test="target.parentId != null">
+        parent_id = #{target.parentId},
+      </if>
+      <if test="target.catName != null">
+        cat_name = #{target.catName},
+      </if>
+      <if test="target.isShow != null">
+        is_show = #{target.isShow},
+      </if>
+      <if test="target.isFloor != null">
+        is_floor = #{target.isFloor},
+      </if>
+      <if test="target.catSort != null">
+        cat_sort = #{target.catSort},
+      </if>
+      <if test="target.garde != null">
+        garde = #{target.garde},
+      </if>
+      <if test="target.status != null">
+        status = #{target.status},
+      </if>
+      <if test="target.createTime != null">
+        create_time = #{target.createTime},
+      </if>
+      <if test="target.updateTime != null">
+        update_time = #{target.updateTime},
+      </if>
+    </set>
+    WHERE id IN
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <delete id="deleteById" parameterType="long">
+    DELETE FROM goods_cats WHERE id = #{id}
+  </delete>
+
+  <delete id="deleteByIds" parameterType="java.util.Collection">
+    DELETE FROM goods_cats WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="selectById" parameterType="long" resultType="com.mhdss.shop.dal.dataobject.base.GoodsCatsDO">
+    SELECT <include refid="query_columns"/> FROM goods_cats WHERE id = #{id}
+  </select>
+
+  <select id="selectIdsByQuery" parameterType="com.mhdss.shop.query.base.GoodsCatsQuery" resultType="long">
+    SELECT id FROM goods_cats <include refid="limit_where"/>
+  </select>
+
+  <select id="selectByIds" parameterType="java.util.Collection" resultType="com.mhdss.shop.dal.dataobject.base.GoodsCatsDO">
+    SELECT <include refid="query_columns"/> FROM goods_cats WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="selectCount" parameterType="com.mhdss.shop.query.base.GoodsCatsQuery" resultType="int">
+    SELECT COUNT(*) FROM goods_cats <include refid="where"/>
+  </select>
+
+  <select id="selectList" parameterType="com.mhdss.shop.query.base.GoodsCatsQuery" resultType="com.mhdss.shop.dal.dataobject.base.GoodsCatsDO">
+    SELECT <include refid="query_columns"/> FROM goods_cats <include refid="limit_where"/>
+  </select>
+</mapper>

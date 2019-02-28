@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mhdss.shop.dal.dao.base.PhoneCheckDAO">
+
+    <sql id="insert_columns">
+    (user_phone, check_code, status, create_time, update_time)
+  </sql>
+
+    <sql id="insert_values">
+    (#{userPhone}, #{checkCode}, #{status}, #{createTime}, #{updateTime})
+  </sql>
+
+    <sql id="query_columns">
+    id, user_phone AS userPhone, check_code AS checkCode, status, create_time AS createTime, update_time AS updateTime
+  </sql>
+
+    <sql id="where">
+        <where>
+            <if test="userPhone != null">
+                AND user_phone = #{userPhone}
+            </if>
+        </where>
+    </sql>
+
+    <sql id="limit_where">
+        <include refid="where"/>
+        <if test="range != 0">
+            LIMIT ${start}, ${range}
+        </if>
+    </sql>
+
+    <insert id="insert" parameterType="com.mhdss.shop.dal.dataobject.base.PhoneCheckDO">
+        <selectKey keyProperty="id" resultType="long">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO phone_check
+        <include refid="insert_columns"/>
+        VALUES
+        <include refid="insert_values"/>
+    </insert>
+
+    <update id="insertUpdateOnDuplicate" parameterType="com.mhdss.shop.dal.dataobject.base.PhoneCheckDO">
+        <selectKey keyProperty="id" resultType="long">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        INSERT INTO phone_check
+        <include refid="insert_columns"/>
+        VALUES
+        <include refid="insert_values"/>
+        ON DUPLICATE KEY UPDATE update_time = #{updateTime}, check_code = #{checkCode}, id = LAST_INSERT_ID(id)
+    </update>
+
+    <update id="updateById" parameterType="com.mhdss.shop.dal.dataobject.base.PhoneCheckDO">
+        UPDATE phone_check
+        <set>
+            <if test="userPhone != null">
+                user_phone = #{userPhone},
+            </if>
+            <if test="checkCode != null">
+                check_code = #{checkCode},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <update id="updateByIds" parameterType="java.util.Map">
+        UPDATE phone_check
+        <set>
+            <if test="target.userPhone != null">
+                user_phone = #{target.userPhone},
+            </if>
+            <if test="target.checkCode != null">
+                check_code = #{target.checkCode},
+            </if>
+            <if test="target.status != null">
+                status = #{target.status},
+            </if>
+            <if test="target.createTime != null">
+                create_time = #{target.createTime},
+            </if>
+            <if test="target.updateTime != null">
+                update_time = #{target.updateTime},
+            </if>
+        </set>
+        WHERE id IN
+        <foreach close=")" collection="ids" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </update>
+
+    <delete id="deleteById" parameterType="long">
+    DELETE FROM phone_check WHERE id = #{id}
+  </delete>
+
+    <delete id="deleteByIds" parameterType="java.util.Collection">
+        DELETE FROM phone_check WHERE id IN
+        <foreach close=")" collection="collection" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="selectById" parameterType="long" resultType="com.mhdss.shop.dal.dataobject.base.PhoneCheckDO">
+        SELECT
+        <include refid="query_columns"/>
+        FROM phone_check WHERE id = #{id}
+    </select>
+
+    <select id="selectIdsByQuery" parameterType="com.mhdss.shop.query.base.PhoneCheckQuery" resultType="long">
+        SELECT id FROM phone_check
+        <include refid="limit_where"/>
+    </select>
+
+    <select id="selectByIds" parameterType="java.util.Collection"
+            resultType="com.mhdss.shop.dal.dataobject.base.PhoneCheckDO">
+        SELECT
+        <include refid="query_columns"/>
+        FROM phone_check WHERE id IN
+        <foreach close=")" collection="collection" item="id" open="(" separator=",">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="selectCount" parameterType="com.mhdss.shop.query.base.PhoneCheckQuery" resultType="int">
+        SELECT COUNT(*) FROM phone_check
+        <include refid="where"/>
+    </select>
+
+    <select id="selectList" parameterType="com.mhdss.shop.query.base.PhoneCheckQuery"
+            resultType="com.mhdss.shop.dal.dataobject.base.PhoneCheckDO">
+        SELECT
+        <include refid="query_columns"/>
+        FROM phone_check
+        <include refid="limit_where"/>
+    </select>
+</mapper>
