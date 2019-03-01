@@ -13,4 +13,6 @@ public interface ShopService {
     Boolean updateShopInfo(UpdateShopPara updateShopPara);
 
     ShopDTO queryShopInfo(Long userId);
+
+    List<CatsDTO> queryCatsByPatentId(Long catsId);
 }

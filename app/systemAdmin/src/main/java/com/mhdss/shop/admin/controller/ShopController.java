@@ -64,12 +64,20 @@ public class ShopController {
 
     @RequestMapping(value = "/info/get", method = RequestMethod.PUT)
     public ResponseData<?> getShopInfo() {
-        //完善商户信息
+        //获取商户信息
         Long userId = authAgent.getUserId();
         shopService.queryShopInfo(userId);
 
         return ResponseData.success();
     }
 
+    @RequestMapping(value = "/cats/get", method = RequestMethod.PUT)
+    public ResponseData<?> getOneCats(@RequestParam(value = "catsId") String catsId) {
+        //根据1级id,获取菜单
+
+        List<CatsDTO> catsDTOList = shopService.queryShopCatsList();
+
+        return ResponseData.success(catsDTOList);
+    }
 
 }

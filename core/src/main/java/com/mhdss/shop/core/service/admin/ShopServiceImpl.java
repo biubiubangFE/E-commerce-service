@@ -124,4 +124,31 @@ public class ShopServiceImpl implements ShopService {
 
         return shopDTO;
     }
+
+    @Override
+    public List<CatsDTO> queryCatsByPatentId(Long catsId) {
+
+        GoodsCatsDO goodsCatsDO = goodsCatsDAO.selectById(catsId);
+
+        if (null != goodsCatsDO) {
+
+            List<CatsDTO> catsDTOS = queryShopCatsList();
+
+            for (CatsDTO catsDTO : catsDTOS) {
+
+                List<CatsDTO> twoCatsDTOS = catsDTO.getCatsList();
+                if (catsDTO.getId().equals(catsId)) {
+                    return twoCatsDTOS;
+                }
+
+                for (CatsDTO twoCat : twoCatsDTOS) {
+
+                    if (twoCat.getId().equals(catsId)) {
+                        return twoCat.getCatsList();
+                    }
+                }
+            }
+        }
+        return null;
+    }
 }
