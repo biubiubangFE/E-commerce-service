@@ -44,7 +44,7 @@ public class ShopController {
                                           @RequestParam(value = "serviceStartTime", required = false) String serviceStartTime,
                                           @RequestParam(value = "serviceEndTime", required = false) String serviceEndTime,
                                           @RequestParam(value = "isInvoice", required = false) Byte isInvoice,
-                                          @RequestParam(value = "shopImg", required = false) String shopImg) {
+                                          @RequestParam(value = "shopImgId", required = false) Long shopImgId) {
         //完善商户信息
 
         UpdateShopPara shopPara = new UpdateShopPara();
@@ -55,7 +55,7 @@ public class ShopController {
         shopPara.setServiceStartTime(DateUtil.getDateTimeHN(serviceStartTime));
         shopPara.setServiceEndTime(DateUtil.getDateTimeHN(serviceEndTime));
         shopPara.setIsInvoice(isInvoice);
-        shopPara.setShopImg(shopImg);
+        shopPara.setShopImgFileId(shopImgId);
         shopService.updateShopInfo(shopPara);
 
         return ResponseData.success();

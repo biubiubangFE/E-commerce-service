@@ -13,7 +13,16 @@ public class GoodsController {
 
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ResponseData<?> register(@RequestParam(value = "shopCode") String shopCode,
+    public ResponseData<?> addGoods(@RequestParam(value = "shopCode") String shopCode,
+                                    @RequestParam(value = "goodsName") String goodsName,
+                                    @RequestParam(value = "keyWord") String keyWord,
+                                    @RequestParam(value = "goodsDesc") String goodsDesc,
+                                    @RequestParam(value = "price") String price) {
+        return null;
+    }
+
+    @RequestMapping(value = "/detail/add", method = RequestMethod.POST)
+    public ResponseData<?> addGoodsDetail(@RequestParam(value = "goodsId") String goodsId,
                                     @RequestParam(value = "goodsName") String goodsName,
                                     @RequestParam(value = "keyWord") String keyWord,
                                     @RequestParam(value = "goodsDesc") String goodsDesc,

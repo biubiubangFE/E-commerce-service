@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mhdss.shop.dal.dao.goods.GoodsSpecsDAO">
+
+  <sql id="insert_columns">
+    (goods_id, name, img_file_id, status, create_time, update_time)
+  </sql>
+
+  <sql id="insert_values">
+    (#{goodsId}, #{name}, #{imgFileId}, #{status}, #{createTime}, #{updateTime})
+  </sql>
+
+  <sql id="query_columns">
+    id, goods_id AS goodsId, name, img_file_id AS imgFileId, status, create_time AS createTime, update_time AS updateTime
+  </sql>
+
+  <sql id="where">
+    <where>
+      
+    </where>
+  </sql>
+
+  <sql id="limit_where">
+    <include refid="where"/>
+    <if test="range != 0">
+      LIMIT ${start}, ${range}
+    </if>
+  </sql>
+
+  <insert id="insert" parameterType="com.mhdss.shop.dal.dataobject.goods.GoodsSpecsDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO goods_specs <include refid="insert_columns"/> VALUES <include refid="insert_values"/>
+  </insert>
+
+  <update id="insertUpdateOnDuplicate" parameterType="com.mhdss.shop.dal.dataobject.goods.GoodsSpecsDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO goods_specs <include refid="insert_columns"/> VALUES <include refid="insert_values"/> ON DUPLICATE KEY UPDATE update_time = #{updateTime}, id = LAST_INSERT_ID(id)
+  </update>
+
+  <update id="updateById" parameterType="com.mhdss.shop.dal.dataobject.goods.GoodsSpecsDO">
+    UPDATE goods_specs
+    <set>
+      <if test="goodsId != null">
+        goods_id = #{goodsId},
+      </if>
+      <if test="name != null">
+        name = #{name},
+      </if>
+      <if test="imgFileId != null">
+        img_file_id = #{imgFileId},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateByIds" parameterType="java.util.Map">
+    UPDATE goods_specs
+    <set>
+      <if test="target.goodsId != null">
+        goods_id = #{target.goodsId},
+      </if>
+      <if test="target.name != null">
+        name = #{target.name},
+      </if>
+      <if test="target.imgFileId != null">
+        img_file_id = #{target.imgFileId},
+      </if>
+      <if test="target.status != null">
+        status = #{target.status},
+      </if>
+      <if test="target.createTime != null">
+        create_time = #{target.createTime},
+      </if>
+      <if test="target.updateTime != null">
+        update_time = #{target.updateTime},
+      </if>
+    </set>
+    WHERE id IN
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <delete id="deleteById" parameterType="long">
+    DELETE FROM goods_specs WHERE id = #{id}
+  </delete>
+
+  <delete id="deleteByIds" parameterType="java.util.Collection">
+    DELETE FROM goods_specs WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="selectById" parameterType="long" resultType="com.mhdss.shop.dal.dataobject.goods.GoodsSpecsDO">
+    SELECT <include refid="query_columns"/> FROM goods_specs WHERE id = #{id}
+  </select>
+
+  <select id="selectIdsByQuery" parameterType="com.mhdss.shop.query.goods.GoodsSpecsQuery" resultType="long">
+    SELECT id FROM goods_specs <include refid="limit_where"/>
+  </select>
+
+  <select id="selectByIds" parameterType="java.util.Collection" resultType="com.mhdss.shop.dal.dataobject.goods.GoodsSpecsDO">
+    SELECT <include refid="query_columns"/> FROM goods_specs WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="selectCount" parameterType="com.mhdss.shop.query.goods.GoodsSpecsQuery" resultType="int">
+    SELECT COUNT(*) FROM goods_specs <include refid="where"/>
+  </select>
+
+  <select id="selectList" parameterType="com.mhdss.shop.query.goods.GoodsSpecsQuery" resultType="com.mhdss.shop.dal.dataobject.goods.GoodsSpecsDO">
+    SELECT <include refid="query_columns"/> FROM goods_specs <include refid="limit_where"/>
+  </select>
+</mapper>

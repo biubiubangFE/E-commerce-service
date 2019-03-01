@@ -110,7 +110,7 @@ public class ShopServiceImpl implements ShopService {
         updateShopDO.setServiceStartTime(updateShopPara.getServiceStartTime());
         updateShopDO.setServiceEndTime(updateShopPara.getServiceEndTime());
         updateShopDO.setIsInvoice(updateShopPara.getIsInvoice());
-        updateShopDO.setShopImg(updateShopPara.getShopImg());
+        updateShopDO.setShopImgFileId(updateShopPara.getShopImgFileId());
         shopDAO.updateById(updateShopDO);
         return true;
     }

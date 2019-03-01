@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mhdss.shop.dal.dao.goods.GoodsAppraisesDAO">
+
+  <sql id="insert_columns">
+    (shop_id, order_id, goods_id, goods_spec_id, user_id, goods_score, service_score, time_score, content, shop_reply, images, is_show, reply_time, status, create_time, update_time)
+  </sql>
+
+  <sql id="insert_values">
+    (#{shopId}, #{orderId}, #{goodsId}, #{goodsSpecId}, #{userId}, #{goodsScore}, #{serviceScore}, #{timeScore}, #{content}, #{shopReply}, #{images}, #{isShow}, #{replyTime}, #{status}, #{createTime}, #{updateTime})
+  </sql>
+
+  <sql id="query_columns">
+    id, shop_id AS shopId, order_id AS orderId, goods_id AS goodsId, goods_spec_id AS goodsSpecId, user_id AS userId, goods_score AS goodsScore, service_score AS serviceScore, time_score AS timeScore, content, shop_reply AS shopReply, images, is_show AS isShow, reply_time AS replyTime, status, create_time AS createTime, update_time AS updateTime
+  </sql>
+
+  <sql id="where">
+    <where>
+      
+    </where>
+  </sql>
+
+  <sql id="limit_where">
+    <include refid="where"/>
+    <if test="range != 0">
+      LIMIT ${start}, ${range}
+    </if>
+  </sql>
+
+  <insert id="insert" parameterType="com.mhdss.shop.dal.dataobject.goods.GoodsAppraisesDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO goods_appraises <include refid="insert_columns"/> VALUES <include refid="insert_values"/>
+  </insert>
+
+  <update id="insertUpdateOnDuplicate" parameterType="com.mhdss.shop.dal.dataobject.goods.GoodsAppraisesDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO goods_appraises <include refid="insert_columns"/> VALUES <include refid="insert_values"/> ON DUPLICATE KEY UPDATE update_time = #{updateTime}, id = LAST_INSERT_ID(id)
+  </update>
+
+  <update id="updateById" parameterType="com.mhdss.shop.dal.dataobject.goods.GoodsAppraisesDO">
+    UPDATE goods_appraises
+    <set>
+      <if test="shopId != null">
+        shop_id = #{shopId},
+      </if>
+      <if test="orderId != null">
+        order_id = #{orderId},
+      </if>
+      <if test="goodsId != null">
+        goods_id = #{goodsId},
+      </if>
+      <if test="goodsSpecId != null">
+        goods_spec_id = #{goodsSpecId},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId},
+      </if>
+      <if test="goodsScore != null">
+        goods_score = #{goodsScore},
+      </if>
+      <if test="serviceScore != null">
+        service_score = #{serviceScore},
+      </if>
+      <if test="timeScore != null">
+        time_score = #{timeScore},
+      </if>
+      <if test="content != null">
+        content = #{content},
+      </if>
+      <if test="shopReply != null">
+        shop_reply = #{shopReply},
+      </if>
+      <if test="images != null">
+        images = #{images},
+      </if>
+      <if test="isShow != null">
+        is_show = #{isShow},
+      </if>
+      <if test="replyTime != null">
+        reply_time = #{replyTime},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateByIds" parameterType="java.util.Map">
+    UPDATE goods_appraises
+    <set>
+      <if test="target.shopId != null">
+        shop_id = #{target.shopId},
+      </if>
+      <if test="target.orderId != null">
+        order_id = #{target.orderId},
+      </if>
+      <if test="target.goodsId != null">
+        goods_id = #{target.goodsId},
+      </if>
+      <if test="target.goodsSpecId != null">
+        goods_spec_id = #{target.goodsSpecId},
+      </if>
+      <if test="target.userId != null">
+        user_id = #{target.userId},
+      </if>
+      <if test="target.goodsScore != null">
+        goods_score = #{target.goodsScore},
+      </if>
+      <if test="target.serviceScore != null">
+        service_score = #{target.serviceScore},
+      </if>
+      <if test="target.timeScore != null">
+        time_score = #{target.timeScore},
+      </if>
+      <if test="target.content != null">
+        content = #{target.content},
+      </if>
+      <if test="target.shopReply != null">
+        shop_reply = #{target.shopReply},
+      </if>
+      <if test="target.images != null">
+        images = #{target.images},
+      </if>
+      <if test="target.isShow != null">
+        is_show = #{target.isShow},
+      </if>
+      <if test="target.replyTime != null">
+        reply_time = #{target.replyTime},
+      </if>
+      <if test="target.status != null">
+        status = #{target.status},
+      </if>
+      <if test="target.createTime != null">
+        create_time = #{target.createTime},
+      </if>
+      <if test="target.updateTime != null">
+        update_time = #{target.updateTime},
+      </if>
+    </set>
+    WHERE id IN
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <delete id="deleteById" parameterType="long">
+    DELETE FROM goods_appraises WHERE id = #{id}
+  </delete>
+
+  <delete id="deleteByIds" parameterType="java.util.Collection">
+    DELETE FROM goods_appraises WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="selectById" parameterType="long" resultType="com.mhdss.shop.dal.dataobject.goods.GoodsAppraisesDO">
+    SELECT <include refid="query_columns"/> FROM goods_appraises WHERE id = #{id}
+  </select>
+
+  <select id="selectIdsByQuery" parameterType="com.mhdss.shop.query.goods.GoodsAppraisesQuery" resultType="long">
+    SELECT id FROM goods_appraises <include refid="limit_where"/>
+  </select>
+
+  <select id="selectByIds" parameterType="java.util.Collection" resultType="com.mhdss.shop.dal.dataobject.goods.GoodsAppraisesDO">
+    SELECT <include refid="query_columns"/> FROM goods_appraises WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="selectCount" parameterType="com.mhdss.shop.query.goods.GoodsAppraisesQuery" resultType="int">
+    SELECT COUNT(*) FROM goods_appraises <include refid="where"/>
+  </select>
+
+  <select id="selectList" parameterType="com.mhdss.shop.query.goods.GoodsAppraisesQuery" resultType="com.mhdss.shop.dal.dataobject.goods.GoodsAppraisesDO">
+    SELECT <include refid="query_columns"/> FROM goods_appraises <include refid="limit_where"/>
+  </select>
+</mapper>

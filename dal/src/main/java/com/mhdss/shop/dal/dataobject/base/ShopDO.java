@@ -20,7 +20,7 @@ public class ShopDO extends BaseDO {
 
     private String 	telephone;
 
-    private String shopImg;
+    private Long shopImgFileId;
 
     private Byte isInvoice;
 
@@ -106,12 +106,12 @@ public class ShopDO extends BaseDO {
         this.	telephone = 	telephone;
     }
 
-    public String getShopImg() {
-        return shopImg;
+    public Long getShopImgFileId() {
+        return shopImgFileId;
     }
 
-    public void setShopImg(String shopImg) {
-        this.shopImg = shopImg;
+    public void setShopImgFileId(Long shopImgFileId) {
+        this.shopImgFileId = shopImgFileId;
     }
 
     public Byte getIsInvoice() {

@@ -7,7 +7,7 @@ public class UpdateShopPara {
     private String shopName;
     private String shopkeeper;
     private String telephone;
-    private String shopImg;
+    private Long shopImgFileId;
     private Long serviceStartTime;
     private Long serviceEndTime;
     private Byte shopAtive;
@@ -45,12 +45,12 @@ public class UpdateShopPara {
         this.telephone = telephone;
     }
 
-    public String getShopImg() {
-        return shopImg;
+    public Long getShopImgFileId() {
+        return shopImgFileId;
     }
 
-    public void setShopImg(String shopImg) {
-        this.shopImg = shopImg;
+    public void setShopImgFileId(Long shopImgFileId) {
+        this.shopImgFileId = shopImgFileId;
     }
 
     public Long getServiceStartTime() {

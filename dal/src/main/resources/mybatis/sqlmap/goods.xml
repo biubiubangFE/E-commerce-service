@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mhdss.shop.dal.dao.goods.GoodsDAO">
+
+  <sql id="insert_columns">
+    (goods_cats_id, shop_id, goods_name, pro_no, key_word, goods_desc, img_file_id, price, cost, visit_num, appraise_num, is_spec, is_sale, is_hot, is_new, is_recom, status, create_time, update_time)
+  </sql>
+
+  <sql id="insert_values">
+    (#{goodsCatsId}, #{shopId}, #{goodsName}, #{proNo}, #{keyWord}, #{goodsDesc}, #{imgFileId}, #{price}, #{cost}, #{visitNum}, #{appraiseNum}, #{isSpec}, #{isSale}, #{isHot}, #{isNew}, #{isRecom}, #{status}, #{createTime}, #{updateTime})
+  </sql>
+
+  <sql id="query_columns">
+    id, goods_cats_id AS goodsCatsId, shop_id AS shopId, goods_name AS goodsName, pro_no AS proNo, key_word AS keyWord, goods_desc AS goodsDesc, img_file_id AS imgFileId, price, cost, visit_num AS visitNum, appraise_num AS appraiseNum, is_spec AS isSpec, is_sale AS isSale, is_hot AS isHot, is_new AS isNew, is_recom AS isRecom, status, create_time AS createTime, update_time AS updateTime
+  </sql>
+
+  <sql id="where">
+    <where>
+      
+    </where>
+  </sql>
+
+  <sql id="limit_where">
+    <include refid="where"/>
+    <if test="range != 0">
+      LIMIT ${start}, ${range}
+    </if>
+  </sql>
+
+  <insert id="insert" parameterType="com.mhdss.shop.dal.dataobject.goods.GoodsDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO goods <include refid="insert_columns"/> VALUES <include refid="insert_values"/>
+  </insert>
+
+  <update id="insertUpdateOnDuplicate" parameterType="com.mhdss.shop.dal.dataobject.goods.GoodsDO">
+    <selectKey keyProperty="id" resultType="long">
+      SELECT LAST_INSERT_ID() AS id
+    </selectKey>
+    INSERT INTO goods <include refid="insert_columns"/> VALUES <include refid="insert_values"/> ON DUPLICATE KEY UPDATE update_time = #{updateTime}, id = LAST_INSERT_ID(id)
+  </update>
+
+  <update id="updateById" parameterType="com.mhdss.shop.dal.dataobject.goods.GoodsDO">
+    UPDATE goods
+    <set>
+      <if test="goodsCatsId != null">
+        goods_cats_id = #{goodsCatsId},
+      </if>
+      <if test="shopId != null">
+        shop_id = #{shopId},
+      </if>
+      <if test="goodsName != null">
+        goods_name = #{goodsName},
+      </if>
+      <if test="proNo != null">
+        pro_no = #{proNo},
+      </if>
+      <if test="keyWord != null">
+        key_word = #{keyWord},
+      </if>
+      <if test="goodsDesc != null">
+        goods_desc = #{goodsDesc},
+      </if>
+      <if test="imgFileId != null">
+        img_file_id = #{imgFileId},
+      </if>
+      <if test="price != null">
+        price = #{price},
+      </if>
+      <if test="cost != null">
+        cost = #{cost},
+      </if>
+      <if test="visitNum != null">
+        visit_num = #{visitNum},
+      </if>
+      <if test="appraiseNum != null">
+        appraise_num = #{appraiseNum},
+      </if>
+      <if test="isSpec != null">
+        is_spec = #{isSpec},
+      </if>
+      <if test="isSale != null">
+        is_sale = #{isSale},
+      </if>
+      <if test="isHot != null">
+        is_hot = #{isHot},
+      </if>
+      <if test="isNew != null">
+        is_new = #{isNew},
+      </if>
+      <if test="isRecom != null">
+        is_recom = #{isRecom},
+      </if>
+      <if test="status != null">
+        status = #{status},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime},
+      </if>
+    </set>
+    WHERE id = #{id}
+  </update>
+
+  <update id="updateByIds" parameterType="java.util.Map">
+    UPDATE goods
+    <set>
+      <if test="target.goodsCatsId != null">
+        goods_cats_id = #{target.goodsCatsId},
+      </if>
+      <if test="target.shopId != null">
+        shop_id = #{target.shopId},
+      </if>
+      <if test="target.goodsName != null">
+        goods_name = #{target.goodsName},
+      </if>
+      <if test="target.proNo != null">
+        pro_no = #{target.proNo},
+      </if>
+      <if test="target.keyWord != null">
+        key_word = #{target.keyWord},
+      </if>
+      <if test="target.goodsDesc != null">
+        goods_desc = #{target.goodsDesc},
+      </if>
+      <if test="target.imgFileId != null">
+        img_file_id = #{target.imgFileId},
+      </if>
+      <if test="target.price != null">
+        price = #{target.price},
+      </if>
+      <if test="target.cost != null">
+        cost = #{target.cost},
+      </if>
+      <if test="target.visitNum != null">
+        visit_num = #{target.visitNum},
+      </if>
+      <if test="target.appraiseNum != null">
+        appraise_num = #{target.appraiseNum},
+      </if>
+      <if test="target.isSpec != null">
+        is_spec = #{target.isSpec},
+      </if>
+      <if test="target.isSale != null">
+        is_sale = #{target.isSale},
+      </if>
+      <if test="target.isHot != null">
+        is_hot = #{target.isHot},
+      </if>
+      <if test="target.isNew != null">
+        is_new = #{target.isNew},
+      </if>
+      <if test="target.isRecom != null">
+        is_recom = #{target.isRecom},
+      </if>
+      <if test="target.status != null">
+        status = #{target.status},
+      </if>
+      <if test="target.createTime != null">
+        create_time = #{target.createTime},
+      </if>
+      <if test="target.updateTime != null">
+        update_time = #{target.updateTime},
+      </if>
+    </set>
+    WHERE id IN
+    <foreach close=")" collection="ids" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <delete id="deleteById" parameterType="long">
+    DELETE FROM goods WHERE id = #{id}
+  </delete>
+
+  <delete id="deleteByIds" parameterType="java.util.Collection">
+    DELETE FROM goods WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </delete>
+
+  <select id="selectById" parameterType="long" resultType="com.mhdss.shop.dal.dataobject.goods.GoodsDO">
+    SELECT <include refid="query_columns"/> FROM goods WHERE id = #{id}
+  </select>
+
+  <select id="selectIdsByQuery" parameterType="com.mhdss.shop.query.goods.GoodsQuery" resultType="long">
+    SELECT id FROM goods <include refid="limit_where"/>
+  </select>
+
+  <select id="selectByIds" parameterType="java.util.Collection" resultType="com.mhdss.shop.dal.dataobject.goods.GoodsDO">
+    SELECT <include refid="query_columns"/> FROM goods WHERE id IN
+    <foreach close=")" collection="collection" item="id" open="(" separator=",">
+      #{id}
+    </foreach>
+  </select>
+
+  <select id="selectCount" parameterType="com.mhdss.shop.query.goods.GoodsQuery" resultType="int">
+    SELECT COUNT(*) FROM goods <include refid="where"/>
+  </select>
+
+  <select id="selectList" parameterType="com.mhdss.shop.query.goods.GoodsQuery" resultType="com.mhdss.shop.dal.dataobject.goods.GoodsDO">
+    SELECT <include refid="query_columns"/> FROM goods <include refid="limit_where"/>
+  </select>
+</mapper>
