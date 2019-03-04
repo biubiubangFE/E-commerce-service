@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
         userDAO.updateById(updateDO);
         //返回DTO
 
-        return UserConvert.DO2DTO(userDO);
+        return UserConvert.do2DTO(userDO);
     }
 
     @Override
@@ -158,6 +158,6 @@ public class UserServiceImpl implements UserService {
         userDAO.updateById(userDO);
         UserDO newUser = userDAO.selectById(userId);
 
-        return UserConvert.DO2DTO(newUser);
+        return UserConvert.do2DTO(newUser);
     }
 }

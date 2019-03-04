@@ -23,6 +23,10 @@
             <if test="loginPwd != null">
                 AND login_pwd = #{loginPwd}
             </if>
+
+            <if test="cookieKey != null">
+                AND cookie_key = #{cookieKey}
+            </if>
         </where>
     </sql>
 

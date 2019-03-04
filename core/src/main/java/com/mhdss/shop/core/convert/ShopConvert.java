@@ -5,7 +5,7 @@ import com.mhdss.shop.dal.dataobject.base.ShopDO;
 
 public class ShopConvert {
 
-    public static ShopDTO do2dto(ShopDO shopDO) {
+    public static ShopDTO do2Dto(ShopDO shopDO) {
 
         if (null == shopDO) {
             return null;

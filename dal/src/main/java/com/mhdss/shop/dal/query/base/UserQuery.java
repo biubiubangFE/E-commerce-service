@@ -10,6 +10,8 @@ public class UserQuery extends AbstractQuery {
 
     private Byte status;
 
+    private String cookieKey;
+
     public String getUserPhone() {
         return userPhone;
     }
@@ -32,5 +34,13 @@ public class UserQuery extends AbstractQuery {
 
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    public String getCookieKey() {
+        return cookieKey;
+    }
+
+    public void setCookieKey(String cookieKey) {
+        this.cookieKey = cookieKey;
     }
 }

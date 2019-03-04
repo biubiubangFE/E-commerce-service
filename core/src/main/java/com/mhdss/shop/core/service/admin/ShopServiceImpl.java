@@ -120,7 +120,7 @@ public class ShopServiceImpl implements ShopService {
         ShopQuery shopQuery = new ShopQuery();
         shopQuery.setUserId(userId);
         ShopDO shopDO = shopDAO.selectByQuery(shopQuery);
-        ShopDTO shopDTO = ShopConvert.do2dto(shopDO);
+        ShopDTO shopDTO = ShopConvert.do2Dto(shopDO);
 
         return shopDTO;
     }

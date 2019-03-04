@@ -1,8 +1,8 @@
-package com.mhdss.shop.dal.dataobject.base;
+package com.mhdss.shop.client.dto;
 
-import com.mhdss.shop.dal.dataobject.BaseDO;
+public class WxUserDTO {
 
-public class WxUserDO extends BaseDO {
+    private Long id;
 
     private String openId;
 
@@ -10,9 +10,13 @@ public class WxUserDO extends BaseDO {
 
     private String avatarUrl;
 
-    private Byte gender;
+    public Long getId() {
+        return id;
+    }
 
-    private String sessionKey;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getOpenId() {
         return openId;
@@ -36,21 +40,5 @@ public class WxUserDO extends BaseDO {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
-    }
-
-    public Byte getGender() {
-        return gender;
-    }
-
-    public void setGender(Byte gender) {
-        this.gender = gender;
-    }
-
-    public String getSessionKey() {
-        return sessionKey;
-    }
-
-    public void setSessionKey(String sessionKey) {
-        this.sessionKey = sessionKey;
     }
 }

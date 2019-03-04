@@ -4,6 +4,7 @@ import com.mhdss.shop.admin.interceptor.Interceptor;
 import com.mhdss.shop.client.dto.AuthAgent;
 import com.mhdss.shop.core.CoreConfig;
 import com.mhdss.shop.filestorage.FileStorage;
+import com.mhdss.shop.util.FilterUtil;
 import org.apache.commons.codec.CharEncoding;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -36,7 +37,7 @@ import java.util.concurrent.ScheduledExecutorService;
         @ComponentScan(basePackageClasses = {FileStorage.class}),
         @ComponentScan(basePackageClasses = {CoreConfig.class})
 })
-public class Application extends WebMvcConfigurerAdapter{
+public class Application extends WebMvcConfigurerAdapter {
 
     public static void main(String[] args) {
 
@@ -70,18 +71,8 @@ public class Application extends WebMvcConfigurerAdapter{
 
     @Bean
     public FilterRegistrationBean filterRegistration() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin(CorsConfiguration.ALL);
-        config.addAllowedHeader(CorsConfiguration.ALL);
-        config.addAllowedMethod(CorsConfiguration.ALL);
-        config.setMaxAge(60 * 60 * 8L);
 
-        source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
-        return bean;
+        return FilterUtil.filterRegistration();
     }
 
     @Bean(destroyMethod = "destroy")

@@ -1,15 +1,15 @@
-package com.mhdss.shop.admin.interceptor;
+package com.mhdss.shop.goods.interceptor;
 
 import com.mhdss.shop.client.Exception.NotLoginException;
 import com.mhdss.shop.client.dto.AuthAgent;
 import com.mhdss.shop.client.dto.UserDTO;
+import com.mhdss.shop.client.dto.WxUserDTO;
 import com.mhdss.shop.client.service.admin.SessionService;
 import com.mhdss.shop.util.IPUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,8 +24,7 @@ public class Interceptor implements InitializingBean, HandlerInterceptor {
 
     private static final Logger logger = LoggerFactory.getLogger(Interceptor.class);
 
-
-    private String cookieName;
+    private static final String SESSION_KEY_NAME = "sessionKey";
 
     @Autowired
     private AuthAgent authAgent;
@@ -43,21 +42,21 @@ public class Interceptor implements InitializingBean, HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        logger.debug("preHandle==================== {}");
+        logger.debug("goods preHandle==================== {}");
 
-        String sessionKey = request.getHeader(cookieName);
+        String sessionKey = request.getHeader(SESSION_KEY_NAME);
 
-        logger.debug("cookie key ={}", sessionKey);
+        logger.debug("goods cookie key ={}", sessionKey);
         String ip = IPUtil.getLocalIp(request);
         authAgent.setIp(ip);
 
-        UserDTO userDTO = sessionService.queryUserBySessionKey(sessionKey);
+        WxUserDTO wxUserDTO = sessionService.queryWxUserBySessionKey(sessionKey);
 
-        if (null == userDTO) {
+        if (null == wxUserDTO) {
             throw new NotLoginException();
         }
 
-        authAgent.setUserId(userDTO.getId());
+        authAgent.setWxUserId(wxUserDTO.getId());
         return true;
     }
 
@@ -80,11 +79,4 @@ public class Interceptor implements InitializingBean, HandlerInterceptor {
         this.includes = includes;
     }
 
-    public String getCookieName() {
-        return cookieName;
-    }
-
-    public void setCookieName(String cookieName) {
-        this.cookieName = cookieName;
-    }
 }

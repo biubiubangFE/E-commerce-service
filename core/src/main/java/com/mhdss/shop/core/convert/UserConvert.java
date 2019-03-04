@@ -5,7 +5,7 @@ import com.mhdss.shop.dal.dataobject.base.UserDO;
 
 public class UserConvert {
 
-    public static UserDTO DO2DTO(UserDO userDO) {
+    public static UserDTO do2DTO(UserDO userDO) {
 
         if (null == userDO) {
             return null;
